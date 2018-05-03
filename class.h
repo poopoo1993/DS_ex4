@@ -9,5 +9,6 @@ public:
 	string sid;
 	string sName;
 	int score[6];
-	double averageScore; 
+	double averageScore;
+	 
 }
