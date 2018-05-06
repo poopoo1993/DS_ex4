@@ -6,8 +6,8 @@ using namespace std;
 class data{
 
 public:
-	string sid;
-	string sName;
-	int score[6];
-	double averageScore;
+	string sid = "";
+	string sName = "";
+	int score[6] = {};
+	double averageScore = 0;
 }

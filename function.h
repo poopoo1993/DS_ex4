@@ -42,6 +42,7 @@ void openFlie(){
 			fout.open(temp,ios::out|ios::binary);//ios::binary for write into binary code.
 		}
 	}
+	cout<<endl;
 }
 
 void readLineinto(vector <data> &Data){
@@ -59,6 +60,8 @@ void readFileinto(vector <data> &Data){
 	while(!fin.eof()){
 		readLineinto(Data);
 	}
+	
 }
+
 
 
