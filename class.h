@@ -10,5 +10,4 @@ public:
 	string sName;
 	int score[6];
 	double averageScore;
-	 
 }

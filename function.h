@@ -1,11 +1,14 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "class.h"
 
 using namespace std;
 
 fstream fin;
-fstream fout_bin,fout_asc;
+fstream fout;
+
+
 
 void openFlie(){
 	string fileName;
@@ -17,13 +20,21 @@ void openFlie(){
 		if(!fin.is_open()){
 			cout<<"The file isn't exist."<<endl;
 		}else
-			string temp_bin = fileName+".bin";
-			string temp_asc = fileName+".asc";
-			fout_bin.open(temp_bin,ios::out|ios::binary);
-			fout_asc.open(temp_asc,ios::out);
+			string temp = fileName+".bin";
+			fout.open(temp,ios::out|ios::binary);
 		}
 	}
 }
 
-void readFile(){
+void readLineinto(vector <data> &Data){
+	data *line = new data;
+	fin>>line.sid;
+	fin>>line.sName
+	for(int i = 0; i < 6; i++){
+		fin>>line.score[i];
+	}
+	fin >> line.averageScore;
+	Data.pushback(line);
 }
+
+
