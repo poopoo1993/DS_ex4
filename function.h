@@ -45,7 +45,7 @@ void openFlie(){
 	cout<<endl;
 }
 
-void readLineinto(vector <data> &Data){
+void readLineinto(){
 	data *line = new data;
 	fin>>line.sid;
 	fin>>line.sName
@@ -56,7 +56,7 @@ void readLineinto(vector <data> &Data){
 	Data.pushback(line);
 }
 
-void readFileinto(vector <data> &Data){
+void readFileinto(){
 	while(!fin.eof()){
 		readLineinto(Data);
 	}
