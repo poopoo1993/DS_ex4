@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 #include "class.h"
 
 using namespace std;
@@ -31,34 +32,34 @@ void openFlie(){
 		cout<<"Input the file name (e.g., 401, 402): [0]Quit"<<endl;
 		cin>>fileName;
 		
-		if(fileName == "0"){exit(0)};//enter 0 for quit.
+		if(fileName == "0"){exit(0);}//enter 0 for quit.
 		
 		string temp = fileName + ".txt";
 		fin.open(fileName.c_str(),ios::in);
 		if(!fin.is_open()){ //check the file exist, and it's open.
 			cout<<"The file isn't exist."<<endl;
-		}else
+		}else{
 			string temp = fileName+".bin";
 			fout.open(temp,ios::out|ios::binary);//ios::binary for write into binary code.
 		}
 	}
-	cout<<endl;
+	cout<< endl;
 }
 
-void readLineinto(){
+void readLine(){
 	data *line = new data;
-	fin>>line.sid;
-	fin>>line.sName
+	fin>>line->sid;
+	fin>>line->sName;
 	for(int i = 0; i < 6; i++){
-		fin>>line.score[i];
+		fin>>line->score[i];
 	}
-	fin >> line.averageScore;
-	Data.pushback(line);
+	fin >> line->averageScore;
+	Data.push_back(*line);
 }
 
-void readFileinto(){
+void readFile(){
 	while(!fin.eof()){
-		readLineinto(Data);
+		readLine();
 	}
 	
 }
