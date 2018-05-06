@@ -8,7 +8,15 @@ using namespace std;
 fstream fin;
 fstream fout;
 
-
+void welcomeMsg(){
+	
+	cout << "*****************************************" << endl;
+	cout << " On-machine Exercise                    *" << endl;
+	cout << " Mission 1: Make a binary file          *" << endl;
+	cout << " Mission 2: Hashing with Linear probing *" << endl; 
+	cout << "*****************************************" << endl;
+	
+}
 
 void openFlie(){
 	string fileName;
