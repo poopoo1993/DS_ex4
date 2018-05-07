@@ -1,5 +1,3 @@
-#include <iostream>
-#include <string>
 #include <fstream>
 #include <vector>
 #include "class.h"
@@ -11,11 +9,11 @@ fstream fout;//for out file
 vector<data> Data;//there is only one copy of Data, so declare it here.
 
 void welcomeMsg(){
-	
+
 	cout << "*****************************************" << endl;
 	cout << " On-machine Exercise                    *" << endl;
 	cout << " Mission 1: Make a binary file          *" << endl;
-	cout << " Mission 2: Hashing with Linear probing *" << endl; 
+	cout << " Mission 2: Hashing with Linear probing *" << endl;
 	cout << "*****************************************" << endl;
 }
 
@@ -26,21 +24,21 @@ void missionOneMsg(){
 }
 
 void openFlie(){
-	
+
 	string fileName;
 	while(!fin.is_open()){
 		cout<<"Input the file name (e.g., 401, 402): [0]Quit"<<endl;
 		cin>>fileName;
-		
+
 		if(fileName == "0"){exit(0);}//enter 0 for quit.
-		
+
 		string temp = fileName + ".txt";
 		fin.open(fileName.c_str(),ios::in);
 		if(!fin.is_open()){ //check the file exist, and it's open.
 			cout<<"The file isn't exist."<<endl;
 		}else{
 			string temp = fileName+".bin";
-			fout.open(temp,ios::out|ios::binary);//ios::binary for write into binary code.
+			fout.open(temp.c_str(),ios::out|ios::binary);//ios::binary for write into binary code.
 		}
 	}
 	cout<< endl;
@@ -61,7 +59,26 @@ void readFile(){
 	while(!fin.eof()){
 		readLine();
 	}
-	
+
+}
+
+void importBinaryFile(){
+
+	for(int i = 0; i < Data.size(); i++){
+
+		fout.write(Data[i].sid.c_str(), sizeof(Data[i].sid.c_str()));
+		fout.write(Data[i].sName.c_str(), sizeof(Data[i].sName.c_str()));
+		for(int j = 0; j < 6; j++){
+			fout.write((char*)Data[i].score, sizeof((char*)Data[i].score));
+		}
+		
+		char* temp[sizeof(Data[i].averageScore)];
+		memcpy(temp,&Data[i].averageScore,sizeof(Data[i].averageScore));
+		
+		fout.write(temp, sizeof(temp));
+
+	}
+	cout << "~~ A binary file has been successfully created! ~~" << endl;
 }
 
 
