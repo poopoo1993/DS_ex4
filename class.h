@@ -9,7 +9,7 @@ public:
 	string sid = "";
 	string sName = "";
 	int score[6] = {};
-	double averageScore = 0;
+	float averageScore = 0;
 
 	void printData(){
 

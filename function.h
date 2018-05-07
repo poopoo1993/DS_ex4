@@ -20,10 +20,10 @@ void welcomeMsg(){
 void missionOneMsg(){
 	cout << "########################################################" << endl;
 	cout << "Mission 1: Transform a text file into a binary file     " << endl;
-	cout << "########################################################" << endl;
+	cout << "########################################################" << endl << endl;
 }
 
-void openFlie(){
+void openFile(){
 
 	string fileName;
 	while(!fin.is_open()){
@@ -32,12 +32,12 @@ void openFlie(){
 
 		if(fileName == "0"){exit(0);}//enter 0 for quit.
 
-		string temp = fileName + ".txt";
-		fin.open(fileName.c_str(),ios::in);
+		string temp ="input" + fileName + ".txt";
+		fin.open(temp.c_str(),ios::in);
 		if(!fin.is_open()){ //check the file exist, and it's open.
 			cout<<"The file isn't exist."<<endl;
 		}else{
-			string temp = fileName+".bin";
+			string temp = "input" + fileName +".bin";
 			fout.open(temp.c_str(),ios::out|ios::binary);//ios::binary for write into binary code.
 		}
 	}
@@ -65,17 +65,10 @@ void readFile(){
 void importBinaryFile(){
 
 	for(int i = 0; i < Data.size(); i++){
-
 		fout.write(Data[i].sid.c_str(), sizeof(Data[i].sid.c_str()));
 		fout.write(Data[i].sName.c_str(), sizeof(Data[i].sName.c_str()));
-		for(int j = 0; j < 6; j++){
-			fout.write((char*)Data[i].score, sizeof((char*)Data[i].score));
-		}
-		
-		char* temp[sizeof(Data[i].averageScore)];
-		memcpy(temp,&Data[i].averageScore,sizeof(Data[i].averageScore));
-		
-		fout.write(temp, sizeof(temp));
+		fout.write((char*)Data[i].score, sizeof((char*)Data[i].score));
+		fout.write((char*)Data[i].averageScore, sizeof((char*)Data[i].averageScore));
 
 	}
 	cout << "~~ A binary file has been successfully created! ~~" << endl;
