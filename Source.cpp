@@ -5,11 +5,18 @@ using namespace std;
 int main(void){
 
 	welcomeMsg();
+	
+	//mission one start
 	missionOneMsg();
-	openFile();
+	
+	string fileName;
+	openFile(fileName);
 	readFile();
 	importBinaryFile();
-	fin.close();
-	fclose(fout);
+	
+	//mission one end
+	
+	
+	
 
 }

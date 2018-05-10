@@ -23,9 +23,8 @@ void missionOneMsg(){
 	cout << "########################################################" << endl << endl;
 }
 
-void openFile(){
+void openFile(string &fileName;){
 
-	string fileName;
 	while(!fin.is_open()){
 		cout<<"Input the file name (e.g., 401, 402): [0]Quit"<<endl;
 		cin>>fileName;
@@ -68,19 +67,28 @@ void readLine(){
 	
 }
 
-void readFile(){
+void readFile(){ //close in-file here
 	while(!fin.eof()){
 		readLine();
 	}
 	if(Data.back().averageScore == 0){
 		Data.pop_back();
 	}
+	fin.close();
 }
 
-void importBinaryFile(){
+void importBinaryFile(){ // close out-file here
 
 	fwrite(&Data.at(0),32,Data.size(),fout);
+	fclose(fout);
 	cout << "~~ A binary file has been successfully created! ~~" << endl;
+	
+}
+
+void re_openFilebybinary(){
+	
+	
+	
 }
 
 

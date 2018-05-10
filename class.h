@@ -16,3 +16,13 @@ struct data{
 	float averageScore;
 
 };
+
+class hashTable{
+	
+	int hashValue;
+	char sid[10];
+	char sName[10];
+	float averageScore;
+	
+	
+};
