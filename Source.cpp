@@ -9,5 +9,7 @@ int main(void){
 	openFile();
 	readFile();
 	importBinaryFile();
-	
+	fin.close();
+	fclose(fout);
+
 }

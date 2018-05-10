@@ -3,21 +3,16 @@
 
 using namespace std;
 
-class data{
+struct data{
 
-public:
-	string sid = "";
-	string sName = "";
-	int score[6] = {};
-	float averageScore = 0;
+	char sid[10];
+	char sName[10];
+	unsigned char score1;
+	unsigned char score2;
+	unsigned char score3;
+	unsigned char score4;
+	unsigned char score5;
+	unsigned char score6;
+	float averageScore;
 
-	void printData(){
-
-		cout<<sid<<","<<sName<<",";
-		for(int i = 0; i < 6; i++){
-			cout << "	" << score[i];
-		}
-		cout << "	" << averageScore << endl;
-
-	}
 };

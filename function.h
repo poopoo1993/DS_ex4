@@ -5,8 +5,8 @@
 using namespace std;
 
 fstream fin;//for in file
-fstream fout;//for out file
-vector<data> Data;//there is only one copy of Data, so declare it here.
+FILE * fout;//for out file
+vector <data> Data;//there is only one copy of Data, so declare it here.
 
 void welcomeMsg(){
 
@@ -33,46 +33,57 @@ void openFile(){
 		if(fileName == "0"){exit(0);}//enter 0 for quit.
 
 		string temp ="input" + fileName + ".txt";
-		fin.open(temp.c_str(),ios::in);
+		fin.open(temp.c_str(),ios::in|ios::binary);
 		if(!fin.is_open()){ //check the file exist, and it's open.
 			cout<<"The file isn't exist."<<endl;
 		}else{
 			string temp = "input" + fileName +".bin";
-			fout.open(temp.c_str(),ios::out|ios::binary);//ios::binary for write into binary code.
+			fout = fopen((const char*)temp.c_str(),"wb");
 		}
 	}
 	cout<< endl;
+	
 }
 
 void readLine(){
+	
 	data *line = new data;
+	int temp[6];
 	fin>>line->sid;
 	fin>>line->sName;
+	
 	for(int i = 0; i < 6; i++){
-		fin>>line->score[i];
+		fin>>temp[i];
 	}
-	fin >> line->averageScore;
+	
+	line->score1 = temp[0];
+	line->score2 = temp[1];
+	line->score3 = temp[2];
+	line->score4 = temp[3];
+	line->score5 = temp[4];
+	line->score6 = temp[5];
+	
+	fin>>line->averageScore;
 	Data.push_back(*line);
+	
 }
 
 void readFile(){
 	while(!fin.eof()){
 		readLine();
 	}
-
+	if(Data.back().averageScore == 0){
+		Data.pop_back();
+	}
 }
 
 void importBinaryFile(){
 
-	for(int i = 0; i < Data.size(); i++){
-		fout.write(Data[i].sid.c_str(), sizeof(Data[i].sid.c_str()));
-		fout.write(Data[i].sName.c_str(), sizeof(Data[i].sName.c_str()));
-		fout.write((char*)Data[i].score, sizeof((char*)Data[i].score));
-		fout.write((char*)Data[i].averageScore, sizeof((char*)Data[i].averageScore));
-
-	}
+	fwrite(&Data.at(0),32,Data.size(),fout);
 	cout << "~~ A binary file has been successfully created! ~~" << endl;
 }
+
+
 
 
 
