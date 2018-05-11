@@ -1,7 +1,6 @@
 #include <fstream>
 #include <vector>
 #include "class.h"
-#include <sys/stat.h>
 
 using namespace std;
 
@@ -95,7 +94,7 @@ void importBinaryFile(vector <data> &Data){ // close out-file here
 	}
 	
 	cout << "~~ A binary file has been successfully created! ~~" << endl;
-	
+	fout.close();
 }
 
 void printData(vector <data> &Data){
