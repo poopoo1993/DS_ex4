@@ -13,10 +13,10 @@ int main(void){
 	openFile(fileName);
 	readFile();
 	importBinaryFile();
+	printData();
 	
 	//mission one end
 	
-	
-	
 
+	
 }
