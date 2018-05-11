@@ -1,5 +1,6 @@
 #include <fstream>
 #include <vector>
+#include <math.h>
 #include "class.h"
 
 using namespace std;
@@ -151,18 +152,54 @@ void readBinaryFile(data* &binaryData, int fileSize){
 		fin.read(reinterpret_cast<char*>(&binaryData[i].score4),sizeof(binaryData[i].score4));
 		fin.read(reinterpret_cast<char*>(&binaryData[i].score5),sizeof(binaryData[i].score5));
 		fin.read(reinterpret_cast<char*>(&binaryData[i].score6),sizeof(binaryData[i].score6));
-		fin.read(reinterpret_cast<char*>(&binaryData[i].averageScore),sizeof(binaryData[i].averageScore));
-		int temp1 = static_cast<int> (binaryData[i].score1);
-		int temp2 = static_cast<int> (binaryData[i].score2);
-		int temp3 = static_cast<int> (binaryData[i].score3);
-		int temp4 = static_cast<int> (binaryData[i].score4);
-		int temp5 = static_cast<int> (binaryData[i].score5);
-		int temp6 = static_cast<int> (binaryData[i].score6);
-		cout<<"["<<i+1<<"]"<<temp1<<" "<<temp2<<" "<<temp3<<" "<<temp4<<" "<<temp5<<" "<<temp6<<endl; 
-			
+		fin.read(reinterpret_cast<char*>(&binaryData[i].averageScore),sizeof(binaryData[i].averageScore));	
+				
 	}
 	
 	fin.close();
+	
+}
+
+int findPrimeNumberBiggerthan(int number){
+	
+	int temp = pow(number,0.5);
+	int counter = 2;
+	while(1){
+		
+		if(number % counter == 0){
+			number++;
+			counter = 2;
+			continue;
+		}else if (counter > temp){
+			break;
+		}
+		counter++;
+		
+	}
+	
+	return number;
+	
+}
+
+int hash(char* sid,int hashTableSize){
+	int hashValue = 1;
+	for(int i = 0; i < 10; i++){
+		if((int)sid[i] >= 48 && (int)sid[i] <= 57){  //ASCII 1~9
+			hashValue = (hashValue*(int)sid[i]) % hashTableSize;
+		}	
+	}
+	cout<<sid<<" : "<<hashValue<<endl; 
+	return hashValue;
+}
+
+void buildHashTable(data* binaryData, hashTable* HashTable , int fileSize, int hashTableSize){
+	
+	for(int i = 0; i < fileSize; i++){
+		
+		int hashValue = hash(binaryData[i].sid, hashTableSize);
+		
+		
+	}
 	
 }
 
