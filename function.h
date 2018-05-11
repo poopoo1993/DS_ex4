@@ -1,12 +1,12 @@
 #include <fstream>
 #include <vector>
 #include "class.h"
+#include <sys/stat.h>
 
 using namespace std;
 
 fstream fin;//for in file
-FILE * fout;//for out file
-vector <data> Data;//there is only one copy of Data, so declare it here.
+fstream fout;//for out file
 
 void welcomeMsg(){
 	cout << "*****************************************" << endl;
@@ -20,6 +20,12 @@ void missionOneMsg(){
 	cout << "########################################################" << endl;
 	cout << "Mission 1: Transform a text file into a binary file     " << endl;
 	cout << "########################################################" << endl << endl;
+}
+
+void missionTwoMsg(){
+	cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "Mission 2: Build a hash table by linear probing         " << endl;
+	cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl << endl;
 }
 
 void openFile(string &fileName){
@@ -36,14 +42,14 @@ void openFile(string &fileName){
 			cout<<"The file isn't exist."<<endl;
 		}else{
 			string temp = "input" + fileName +".bin";
-			fout = fopen((const char*)temp.c_str(),"wb");
+			fout.open(temp.c_str(),ios::out|ios::binary);
 		}
 	}
 	cout<< endl;
 	
 }
 
-void readLine(){
+void readLine(vector <data> &Data){
 	
 	data *line = new data;
 	int temp[6];
@@ -66,17 +72,34 @@ void readLine(){
 	
 }
 
-void readFile(){ //close in-file here
+void readFile(vector <data> &Data){ //close in-file here
 	while(!fin.eof()){
-		readLine();
+		readLine(Data);
 	}
-	if(Data.back().averageScore == 0){
-		Data.pop_back();
-	}
+	Data.pop_back();
 	fin.close();
 }
 
-void printData(){
+void importBinaryFile(vector <data> &Data){ // close out-file here
+
+	for(int i = 0; i < Data.size(); i++){
+		fout.write(Data[i].sid,sizeof(Data[i].sid));
+		fout.write(Data[i].sName,sizeof(Data[i].sName));
+		fout.write(reinterpret_cast<char*>(&Data[i].score1),sizeof(Data[i].score1));
+		fout.write(reinterpret_cast<char*>(&Data[i].score2),sizeof(Data[i].score2));
+		fout.write(reinterpret_cast<char*>(&Data[i].score3),sizeof(Data[i].score3));
+		fout.write(reinterpret_cast<char*>(&Data[i].score4),sizeof(Data[i].score4));
+		fout.write(reinterpret_cast<char*>(&Data[i].score5),sizeof(Data[i].score5));
+		fout.write(reinterpret_cast<char*>(&Data[i].score6),sizeof(Data[i].score6));
+		fout.write(reinterpret_cast<char*>(&Data[i].averageScore),sizeof(Data[i].averageScore));
+	}
+	
+	cout << "~~ A binary file has been successfully created! ~~" << endl;
+	
+}
+
+void printData(vector <data> &Data){
+	
 	for(int i = 0; i < Data.size(); i++){
 		
 		cout<<"["<<i+1<<"] "<<Data[i].sid<<", "<<Data[i].sName<<",	";
@@ -98,16 +121,51 @@ void printData(){
 	}
 }
 
-void importBinaryFile(){ // close out-file here
-
-	fwrite(&Data.at(0),32,Data.size(),fout);
-	fclose(fout);
-	cout << "~~ A binary file has been successfully created! ~~" << endl;
-	
+void openFileinBinary(string fileName){
+	string temp = "input" + fileName + ".bin";
+	fin.open(temp.c_str(),ios::in|ios::binary);
+	temp = "input" + fileName + ".tab";
+	fout.open(temp.c_str(),ios::out);
 }
 
 
+/*streampos getFileSize(){
+	streampos size;
+	fin.seekg(0,ios::end);
+	size = fin.tellg();
+	cout << "size : "<<size<<endl;
+	fin.seekg(0,ios::beg);
+	return size;
+}*/
 
+
+void readBinaryFile(data* &binaryData, int fileSize){
+	
+	int times = fileSize;
+	for(int i = 0; i < times; i++){
+		
+		fin.read(binaryData[i].sid,sizeof(binaryData[i].sid));
+		fin.read(binaryData[i].sName,sizeof(binaryData[i].sName));
+		fin.read(reinterpret_cast<char*>(&binaryData[i].score1),sizeof(binaryData[i].score1));
+		fin.read(reinterpret_cast<char*>(&binaryData[i].score2),sizeof(binaryData[i].score2));
+		fin.read(reinterpret_cast<char*>(&binaryData[i].score3),sizeof(binaryData[i].score3));
+		fin.read(reinterpret_cast<char*>(&binaryData[i].score4),sizeof(binaryData[i].score4));
+		fin.read(reinterpret_cast<char*>(&binaryData[i].score5),sizeof(binaryData[i].score5));
+		fin.read(reinterpret_cast<char*>(&binaryData[i].score6),sizeof(binaryData[i].score6));
+		fin.read(reinterpret_cast<char*>(&binaryData[i].averageScore),sizeof(binaryData[i].averageScore));
+		int temp1 = static_cast<int> (binaryData[i].score1);
+		int temp2 = static_cast<int> (binaryData[i].score2);
+		int temp3 = static_cast<int> (binaryData[i].score3);
+		int temp4 = static_cast<int> (binaryData[i].score4);
+		int temp5 = static_cast<int> (binaryData[i].score5);
+		int temp6 = static_cast<int> (binaryData[i].score6);
+		cout<<"["<<i+1<<"]"<<temp1<<" "<<temp2<<" "<<temp3<<" "<<temp4<<" "<<temp5<<" "<<temp6<<endl; 
+			
+	}
+	
+	fin.close();
+	
+}
 
 
 
