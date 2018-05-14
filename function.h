@@ -1,5 +1,7 @@
 #include <fstream>
 #include <vector>
+#include <iomanip>
+#include <string.h>
 #include <math.h>
 #include "class.h"
 
@@ -119,6 +121,7 @@ void printData(vector <data> &Data){
 		}
 		
 	}
+	system("pause");
 }
 
 void openFileinBinary(string fileName){
@@ -187,21 +190,104 @@ int hash(char* sid,int hashTableSize){
 		if((int)sid[i] >= 48 && (int)sid[i] <= 57){  //ASCII 1~9
 			hashValue = (hashValue*(int)sid[i]) % hashTableSize;
 		}	
-	}
-	cout<<sid<<" : "<<hashValue<<endl; 
+	} 
 	return hashValue;
 }
 
-void buildHashTable(data* binaryData, hashTable* HashTable , int fileSize, int hashTableSize){
+void buildHashTable(data* binaryData, hashTable* HashTable, int fileSize, int hashTableSize){
 	
 	for(int i = 0; i < fileSize; i++){
 		
 		int hashValue = hash(binaryData[i].sid, hashTableSize);
+		int position = hashValue;
+		while(1){
+			if((int)HashTable[position].sid[0] == 0){
+				
+				HashTable[position].hashValue = hashValue;
+				memcpy(HashTable[position].sid, binaryData[i].sid, sizeof(binaryData[i].sid));
+				memcpy(HashTable[position].sName, binaryData[i].sName, sizeof(binaryData[i].sName));
+				HashTable[position].averageScore = binaryData[i].averageScore;
+				break;	
+				
+			}else{
+				position++;
+				if(position == hashTableSize){
+					position = 0;
+				}
+			}	
+		}	
+	}
+	
+	cout<<"~~ The hash table has been successfully created! ~~"<<endl<<endl;
+
+	
+}
+
+void importHashTable(hashTable* HashTable,  int hashTableSize){
+	
+	fout<<" --- Hash Table --- by Linear probing"<<endl;
+	
+	for(int i = 0; i < hashTableSize; i++){
 		
+		fout << "["<<setw(3)<<i<<"]";
+		if((int)HashTable[i].sid[0] != 0){
+			fout << setw(11) << HashTable[i].hashValue<<"," ;
+			fout << setw(11)<< HashTable[i].sid<<"," ;
+			fout << setw(8)<< HashTable[i].sName<<"," ;
+			fout << setw(11)<< HashTable[i].averageScore<<endl;
+		}else{
+			fout<<endl;
+		}
 		
 	}
 	
+	fout.close();
+	
 }
+
+void comparisonsonAverage(hashTable* HashTable,data* binaryData, int hashTableSize, int fileSize){
+	
+	int probingTimesatSuccessfulCase = 0;
+	for(int i = 0; i < fileSize; i++){
+		int temp = hash(binaryData[i].sid, hashTableSize);
+		while(1){
+			probingTimesatSuccessfulCase++;
+			if(memcmp(HashTable[temp].sid, binaryData[i].sid, sizeof(HashTable[temp].sid))==0){
+				break;
+			}else{
+				temp++;
+				if(temp == hashTableSize){
+					temp = 0;
+				}
+			}
+		}
+	}
+	
+	
+	int probingTimesatUnsuccessfulCase = 0;
+	for(int i = 0; i < hashTableSize; i++){
+		int temp = i;
+		while(1){
+			probingTimesatUnsuccessfulCase++;
+			if(HashTable[temp].hashValue == -1){
+				break;
+			}else{
+				temp++;
+				if(temp == hashTableSize){
+					temp = 0;
+				}
+			}
+		}
+	}
+	
+	float loadFactor = (float)fileSize/(float)hashTableSize;
+	double averageProbingatUnsuccessfulCase = ((double)probingTimesatUnsuccessfulCase - (double)hashTableSize) / (double)hashTableSize;
+	double averageProbingatSuccessfulCase = (double)probingTimesatSuccessfulCase / (double)fileSize;
+	cout << "unsuccessful search: "<< fixed << setprecision(4) <<averageProbingatUnsuccessfulCase<<" comparisons on average"<<endl<<endl<<endl;
+	cout << "successful search: "<< fixed << setprecision(4) <<averageProbingatSuccessfulCase<<" comparisons on average"<<endl<<endl;
+		
+}
+
 
 
 

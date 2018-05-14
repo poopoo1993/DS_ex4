@@ -18,11 +18,12 @@ struct data{
 };
 
 class hashTable{
-	
-	int hashValue;
+
+public:
+	int hashValue = -1;
 	char sid[10];
 	char sName[10];
-	float averageScore;
+	float averageScore = 0;
 	
 	
 };
