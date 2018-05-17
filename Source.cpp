@@ -22,10 +22,14 @@ int main(void){
 		//mission two start
 		missionTwoMsg();
 		openFileinBinary(fileName);
+		
 		data* binaryData = new data[fileSize];
 		readBinaryFile(binaryData,fileSize);
+		
 		int hashTableSize = findPrimeNumberBiggerthan(fileSize*1.2); //1.2 is homework require.
+		
 		hashTable* HashTable = new hashTable[hashTableSize];
+		
 		buildHashTable(binaryData, HashTable , fileSize, hashTableSize);
 		importHashTable(HashTable, hashTableSize);
 		comparisonsonAverage(HashTable, binaryData, hashTableSize, fileSize);	
